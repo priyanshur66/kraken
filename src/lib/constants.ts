@@ -1,4 +1,4 @@
-contractAbi = [
+export const contractAbi = [
 	{
 		"inputs": [
 			{
@@ -599,4 +599,8 @@ contractAbi = [
 		"type": "function"
 	}
 ]
-contractAddress = "0x5F24f98Ea32923EBfED589647339B5eCee85b8aA"; 
+export const contractAddress = "0x8175EfCe93A2c3f627b03CF17c58756D9f789a42"; 
+
+export const usdcAddress = "0x4C2AA252BEe766D3399850569713b55178934849"; // USDC
+
+export const chainId = 128123; // Testnet
