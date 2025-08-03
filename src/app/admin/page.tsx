@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useWeb3 } from '@/lib/Web3Context';
+import { useToast } from '@/lib/ToastContext';
 import { ethers } from 'ethers';
 
 interface Market {
@@ -21,6 +22,7 @@ interface Market {
 
 export default function AdminPage() {
   const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork } = useWeb3();
+  const { showSuccess, showError, showConfirm } = useToast();
   const [loading, setLoading] = useState(false);
   const [markets, setMarkets] = useState<Market[]>([]);
   
@@ -91,7 +93,7 @@ export default function AdminPage() {
       );
       
       await tx.wait();
-      alert('Market created successfully!');
+      showSuccess('Market created successfully!');
       
       // Reset form
       setCreateForm({
@@ -107,7 +109,7 @@ export default function AdminPage() {
       loadMarkets();
     } catch (error: any) {
       console.error('Error creating market:', error);
-      alert(`Error creating market: ${error.message || error}`);
+      showError(`Error creating market: ${error.message || error}`);
     } finally {
       setLoading(false);
     }
@@ -116,18 +118,23 @@ export default function AdminPage() {
   const handleResolveMarket = async (marketId: number) => {
     if (!contract) return;
 
-    try {
-      setLoading(true);
-      const tx = await contract.resolveMarket(marketId);
-      await tx.wait();
-      alert('Market resolved successfully!');
-      loadMarkets();
-    } catch (error: any) {
-      console.error('Error resolving market:', error);
-      alert(`Error resolving market: ${error.message || error}`);
-    } finally {
-      setLoading(false);
-    }
+    showConfirm(
+      'Are you sure you want to resolve this market? This action cannot be undone.',
+      async () => {
+        try {
+          setLoading(true);
+          const tx = await contract.resolveMarket(marketId);
+          await tx.wait();
+          showSuccess('Market resolved successfully!');
+          loadMarkets();
+        } catch (error: any) {
+          console.error('Error resolving market:', error);
+          showError(`Error resolving market: ${error.message || error}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    );
   };
 
   const formatDate = (timestamp: number) => {

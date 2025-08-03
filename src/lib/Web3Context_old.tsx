@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { MetaMaskSDK } from '@metamask/sdk';
 import { ethers } from 'ethers';
 import { contractAbi, contractAddress, chainId } from './constants';
-import toast from 'react-hot-toast';
+import { useToast } from './ToastContext';
 
 interface Web3ContextType {
   account: string | null;
@@ -78,7 +78,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        toast.error('Please install MetaMask!');
+        alert('Please install MetaMask!');
         return;
       }
 
@@ -98,7 +98,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
       await checkNetwork(web3Provider);
     } catch (error) {
       console.error('Error connecting wallet:', error);
-      toast.error('Failed to connect wallet');
+      alert('Failed to connect wallet');
     }
   };
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Web3Provider } from "@/lib/Web3Context";
+import { ToastProvider } from "@/lib/ToastContext";
 import Navbar from "@/components/Navbar";
 
 const geistSans = localFont({
@@ -30,10 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Web3Provider>
-          <Navbar />
-          {children}
-        </Web3Provider>
+        <ToastProvider>
+          <Web3Provider>
+            <Navbar />
+            {children}
+          </Web3Provider>
+        </ToastProvider>
       </body>
     </html>
   );

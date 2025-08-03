@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useWeb3 } from '@/lib/Web3Context';
+import { useToast } from '@/lib/ToastContext';
 import { ethers } from 'ethers';
 
 interface UserPosition {
@@ -22,6 +23,7 @@ interface UserPosition {
 
 export default function DashboardPage() {
   const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork } = useWeb3();
+  const { showSuccess, showError, showConfirm } = useToast();
   const [loading, setLoading] = useState(false);
   const [userPositions, setUserPositions] = useState<UserPosition[]>([]);
   const [claimableWinnings, setClaimableWinnings] = useState<number[]>([]);
@@ -94,18 +96,23 @@ export default function DashboardPage() {
   const claimWinnings = async (marketId: number) => {
     if (!contract) return;
 
-    try {
-      setLoading(true);
-      const tx = await contract.claimWinning(marketId);
-      await tx.wait();
-      alert('Winnings claimed successfully!');
-      loadUserPositions();
-    } catch (error: any) {
-      console.error('Error claiming winnings:', error);
-      alert(`Error claiming winnings: ${error.message || error}`);
-    } finally {
-      setLoading(false);
-    }
+    showConfirm(
+      'Are you sure you want to claim your winnings for this market?',
+      async () => {
+        try {
+          setLoading(true);
+          const tx = await contract.claimWinning(marketId);
+          await tx.wait();
+          showSuccess('Winnings claimed successfully!');
+          loadUserPositions();
+        } catch (error: any) {
+          console.error('Error claiming winnings:', error);
+          showError(`Error claiming winnings: ${error.message || error}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    );
   };
 
   const formatDate = (timestamp: number) => {

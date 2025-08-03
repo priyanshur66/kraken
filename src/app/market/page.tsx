@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useWeb3 } from '@/lib/Web3Context';
+import { useToast } from '@/lib/ToastContext';
 import { ethers } from 'ethers';
 import { usdcAddress } from '@/lib/constants';
 
@@ -19,6 +20,7 @@ interface Market {
 
 export default function MarketPage() {
   const { account, contract, provider, isConnected, connectWallet, isCorrectNetwork, switchNetwork } = useWeb3();
+  const { showSuccess, showError, showConfirm } = useToast();
   const [loading, setLoading] = useState(false);
   const [markets, setMarkets] = useState<Market[]>([]);
   const [selectedMarket, setSelectedMarket] = useState<number | null>(null);
@@ -106,71 +108,87 @@ export default function MarketPage() {
   const approveUsdc = async () => {
     if (!provider || !contract) return;
     
-    try {
-      setLoading(true);
-      const usdcAbi = [
-        "function approve(address spender, uint256 amount) returns (bool)"
-      ];
-      
-      const signer = await provider.getSigner();
-      const usdcContract = new ethers.Contract(usdcAddress, usdcAbi, signer);
-      
-      // Approve a large amount (or specific amount based on your needs)
-      const approveAmount = ethers.parseUnits("1000000", 6); // 1M USDC
-      const tx = await usdcContract.approve(await contract.getAddress(), approveAmount);
-      await tx.wait();
-      
-      alert('USDC approval successful!');
-      await checkAllowance();
-    } catch (error: any) {
-      console.error('Error approving USDC:', error);
-      alert(`Error approving USDC: ${error.message || error}`);
-    } finally {
-      setLoading(false);
-    }
+    showConfirm(
+      'This will approve the contract to spend up to 1,000,000 USDC from your wallet. Continue?',
+      async () => {
+        try {
+          setLoading(true);
+          const usdcAbi = [
+            "function approve(address spender, uint256 amount) returns (bool)"
+          ];
+          
+          const signer = await provider.getSigner();
+          const usdcContract = new ethers.Contract(usdcAddress, usdcAbi, signer);
+          
+          // Approve a large amount (or specific amount based on your needs)
+          const approveAmount = ethers.parseUnits("1000000", 6); // 1M USDC
+          const tx = await usdcContract.approve(await contract.getAddress(), approveAmount);
+          await tx.wait();
+          
+          showSuccess('USDC approval successful!');
+          await checkAllowance();
+        } catch (error: any) {
+          console.error('Error approving USDC:', error);
+          showError(`Error approving USDC: ${error.message || error}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    );
   };
 
   const placeBet = async () => {
     if (!contract || selectedMarket === null || !selectedOption || !betAmount) return;
     
-    try {
-      setLoading(true);
-      
-      // Convert bet amount to USDC format (6 decimals)
-      const amount = ethers.parseUnits(betAmount, 6);
-      
-      // Determine which option is selected
-      const isOptionA = selectedOption === 'A';
-      const isOptionB = selectedOption === 'B';
-      const isOptionC = selectedOption === 'C';
-      const isOptionD = selectedOption === 'D';
-      
-      const tx = await contract.buyShares(
-        selectedMarket,
-        isOptionA,
-        isOptionB,
-        isOptionC,
-        isOptionD,
-        amount
-      );
-      
-      await tx.wait();
-      alert('Bet placed successfully!');
-      
-      // Reset form
-      setSelectedMarket(null);
-      setSelectedOption('');
-      setBetAmount('');
-      
-      // Reload balances
-      loadUsdcBalance();
-      checkAllowance();
-    } catch (error: any) {
-      console.error('Error placing bet:', error);
-      alert(`Error placing bet: ${error.message || error}`);
-    } finally {
-      setLoading(false);
-    }
+    const market = markets.find(m => m.id === selectedMarket);
+    const optionText = selectedOption === 'A' ? market?.optionA : 
+                      selectedOption === 'B' ? market?.optionB : 
+                      selectedOption === 'C' ? market?.optionC : 
+                      market?.optionD;
+
+    showConfirm(
+      `Are you sure you want to bet ${betAmount} USDC on "${optionText}"?`,
+      async () => {
+        try {
+          setLoading(true);
+          
+          // Convert bet amount to USDC format (6 decimals)
+          const amount = ethers.parseUnits(betAmount, 6);
+          
+          // Determine which option is selected
+          const isOptionA = selectedOption === 'A';
+          const isOptionB = selectedOption === 'B';
+          const isOptionC = selectedOption === 'C';
+          const isOptionD = selectedOption === 'D';
+          
+          const tx = await contract.buyShares(
+            selectedMarket,
+            isOptionA,
+            isOptionB,
+            isOptionC,
+            isOptionD,
+            amount
+          );
+          
+          await tx.wait();
+          showSuccess('Bet placed successfully!');
+          
+          // Reset form
+          setSelectedMarket(null);
+          setSelectedOption('');
+          setBetAmount('');
+          
+          // Reload balances
+          loadUsdcBalance();
+          checkAllowance();
+        } catch (error: any) {
+          console.error('Error placing bet:', error);
+          showError(`Error placing bet: ${error.message || error}`);
+        } finally {
+          setLoading(false);
+        }
+      }
+    );
   };
 
   const formatDate = (timestamp: number) => {
