@@ -19,8 +19,8 @@ interface Market {
 }
 
 export default function MarketPage() {
-  const { account, contract, provider, isConnected, connectWallet, isCorrectNetwork, switchNetwork } = useWeb3();
-  const { showSuccess, showError, showConfirm } = useToast();
+  const { account, contract, provider, isConnected, connectWallet, isCorrectNetwork, switchNetwork, executeTransaction } = useWeb3();
+  const { showSuccess, showError } = useToast();
   const [loading, setLoading] = useState(false);
   const [markets, setMarkets] = useState<Market[]>([]);
   const [selectedMarket, setSelectedMarket] = useState<number | null>(null);
@@ -108,11 +108,11 @@ export default function MarketPage() {
   const approveUsdc = async () => {
     if (!provider || !contract) return;
     
-    showConfirm(
-      'This will approve the contract to spend up to 1,000,000 USDC from your wallet. Continue?',
-      async () => {
-        try {
-          setLoading(true);
+    try {
+      setLoading(true);
+      
+      await executeTransaction(
+        async () => {
           const usdcAbi = [
             "function approve(address spender, uint256 amount) returns (bool)"
           ];
@@ -123,18 +123,21 @@ export default function MarketPage() {
           // Approve a large amount (or specific amount based on your needs)
           const approveAmount = ethers.parseUnits("1000000", 6); // 1M USDC
           const tx = await usdcContract.approve(await contract.getAddress(), approveAmount);
-          await tx.wait();
-          
-          showSuccess('USDC approval successful!');
-          await checkAllowance();
-        } catch (error: any) {
-          console.error('Error approving USDC:', error);
-          showError(`Error approving USDC: ${error.message || error}`);
-        } finally {
-          setLoading(false);
-        }
+          return await tx.wait();
+        },
+        'This will approve the contract to spend up to 1,000,000 USDC from your wallet. Continue?',
+        'USDC approval successful!'
+      );
+      
+      await checkAllowance();
+    } catch (error: any) {
+      console.error('Error approving USDC:', error);
+      if (error.message !== 'User cancelled') {
+        showError(`Error approving USDC: ${error.message || error}`);
       }
-    );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const placeBet = async () => {
@@ -146,12 +149,11 @@ export default function MarketPage() {
                       selectedOption === 'C' ? market?.optionC : 
                       market?.optionD;
 
-    showConfirm(
-      `Are you sure you want to bet ${betAmount} USDC on "${optionText}"?`,
-      async () => {
-        try {
-          setLoading(true);
-          
+    try {
+      setLoading(true);
+      
+      await executeTransaction(
+        async () => {
           // Convert bet amount to USDC format (6 decimals)
           const amount = ethers.parseUnits(betAmount, 6);
           
@@ -170,25 +172,28 @@ export default function MarketPage() {
             amount
           );
           
-          await tx.wait();
-          showSuccess('Bet placed successfully!');
-          
-          // Reset form
-          setSelectedMarket(null);
-          setSelectedOption('');
-          setBetAmount('');
-          
-          // Reload balances
-          loadUsdcBalance();
-          checkAllowance();
-        } catch (error: any) {
-          console.error('Error placing bet:', error);
-          showError(`Error placing bet: ${error.message || error}`);
-        } finally {
-          setLoading(false);
-        }
+          return await tx.wait();
+        },
+        `Are you sure you want to bet ${betAmount} USDC on "${optionText}"?`,
+        'Bet placed successfully!'
+      );
+      
+      // Reset form
+      setSelectedMarket(null);
+      setSelectedOption('');
+      setBetAmount('');
+      
+      // Reload balances
+      loadUsdcBalance();
+      checkAllowance();
+    } catch (error: any) {
+      console.error('Error placing bet:', error);
+      if (error.message !== 'User cancelled') {
+        showError(`Error placing bet: ${error.message || error}`);
       }
-    );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formatDate = (timestamp: number) => {

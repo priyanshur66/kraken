@@ -21,8 +21,8 @@ interface Market {
 }
 
 export default function AdminPage() {
-  const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork } = useWeb3();
-  const { showSuccess, showError, showConfirm } = useToast();
+  const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork, executeTransaction } = useWeb3();
+  const { showSuccess, showError } = useToast();
   const [loading, setLoading] = useState(false);
   const [markets, setMarkets] = useState<Market[]>([]);
   
@@ -81,19 +81,25 @@ export default function AdminPage() {
 
     try {
       setLoading(true);
-      const durationInSeconds = parseInt(createForm.duration) * 60; // Convert minutes to seconds
       
-      const tx = await contract.createMarket(
-        createForm.question,
-        createForm.optionA,
-        createForm.optionB,
-        createForm.optionC,
-        createForm.optionD,
-        durationInSeconds
+      await executeTransaction(
+        async () => {
+          const durationInSeconds = parseInt(createForm.duration) * 60; // Convert minutes to seconds
+          
+          const tx = await contract.createMarket(
+            createForm.question,
+            createForm.optionA,
+            createForm.optionB,
+            createForm.optionC,
+            createForm.optionD,
+            durationInSeconds
+          );
+          
+          return await tx.wait();
+        },
+        `Create market "${createForm.question}" with duration ${createForm.duration} minutes?`,
+        'Market created successfully!'
       );
-      
-      await tx.wait();
-      showSuccess('Market created successfully!');
       
       // Reset form
       setCreateForm({
@@ -109,7 +115,9 @@ export default function AdminPage() {
       loadMarkets();
     } catch (error: any) {
       console.error('Error creating market:', error);
-      showError(`Error creating market: ${error.message || error}`);
+      if (error.message !== 'User cancelled') {
+        showError(`Error creating market: ${error.message || error}`);
+      }
     } finally {
       setLoading(false);
     }
@@ -118,23 +126,27 @@ export default function AdminPage() {
   const handleResolveMarket = async (marketId: number) => {
     if (!contract) return;
 
-    showConfirm(
-      'Are you sure you want to resolve this market? This action cannot be undone.',
-      async () => {
-        try {
-          setLoading(true);
+    try {
+      setLoading(true);
+      
+      await executeTransaction(
+        async () => {
           const tx = await contract.resolveMarket(marketId);
-          await tx.wait();
-          showSuccess('Market resolved successfully!');
-          loadMarkets();
-        } catch (error: any) {
-          console.error('Error resolving market:', error);
-          showError(`Error resolving market: ${error.message || error}`);
-        } finally {
-          setLoading(false);
-        }
+          return await tx.wait();
+        },
+        'Are you sure you want to resolve this market? This action cannot be undone.',
+        'Market resolved successfully!'
+      );
+      
+      loadMarkets();
+    } catch (error: any) {
+      console.error('Error resolving market:', error);
+      if (error.message !== 'User cancelled') {
+        showError(`Error resolving market: ${error.message || error}`);
       }
-    );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formatDate = (timestamp: number) => {

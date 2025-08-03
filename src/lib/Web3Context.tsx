@@ -15,6 +15,12 @@ interface Web3ContextType {
   disconnectWallet: () => void;
   isCorrectNetwork: boolean;
   switchNetwork: () => Promise<void>;
+  executeTransaction: (
+    transactionFn: () => Promise<any>,
+    confirmationMessage: string,
+    successMessage: string,
+    retries?: number
+  ) => Promise<any>;
 }
 
 const Web3Context = createContext<Web3ContextType | undefined>(undefined);
@@ -112,7 +118,10 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
 
   const switchNetwork = async () => {
     try {
-      if (!window.ethereum) return;
+      if (!window.ethereum) {
+        toast.error('MetaMask not detected');
+        return;
+      }
       
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -122,6 +131,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
       if (provider) {
         await checkNetwork(provider);
       }
+      toast.success('Network switched successfully');
     } catch (error: any) {
       if (error.code === 4902) {
         try {
@@ -139,13 +149,89 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
               blockExplorerUrls: ['https://testnet.explorer.etherlink.com'],
             }],
           });
+          toast.success('Network added and switched successfully');
         } catch (addError) {
           console.error('Error adding network:', addError);
+          toast.error('Failed to add network');
         }
+      } else if (error.code === 4001) {
+        toast.error('User rejected network switch');
       } else {
         console.error('Error switching network:', error);
+        toast.error('Failed to switch network');
       }
     }
+  };
+
+  // Enhanced transaction wrapper with retry logic for circuit breaker errors
+  const executeTransaction = async (
+    transactionFn: () => Promise<any>,
+    confirmationMessage: string,
+    successMessage: string,
+    retries: number = 3
+  ) => {
+    return new Promise((resolve, reject) => {
+      toast((t) => (
+        <div className="flex flex-col space-y-3">
+          <span>{confirmationMessage}</span>
+          <div className="flex space-x-2">
+            <button
+              className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+              onClick={async () => {
+                toast.dismiss(t.id);
+                let lastError;
+                
+                for (let i = 0; i < retries; i++) {
+                  try {
+                    const result = await transactionFn();
+                    toast.success(successMessage);
+                    resolve(result);
+                    return;
+                  } catch (error: any) {
+                    lastError = error;
+                    console.error(`Transaction attempt ${i + 1} failed:`, error);
+                    
+                    // Check for circuit breaker error
+                    if (error.message?.includes('circuit breaker') || 
+                        error.code === 'UNKNOWN_ERROR' ||
+                        error.message?.includes('Execution prevented')) {
+                      
+                      if (i < retries - 1) {
+                        toast.loading(`Transaction failed, retrying... (${i + 2}/${retries})`);
+                        // Wait before retry
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        continue;
+                      } else {
+                        toast.error('MetaMask connectivity issue. Please try again later or refresh the page.');
+                      }
+                    } else if (error.code === 4001) {
+                      toast.error('Transaction rejected by user');
+                    } else {
+                      toast.error(`Transaction failed: ${error.message || error}`);
+                    }
+                    break;
+                  }
+                }
+                reject(lastError);
+              }}
+            >
+              Confirm
+            </button>
+            <button
+              className="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600"
+              onClick={() => {
+                toast.dismiss(t.id);
+                reject(new Error('User cancelled'));
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ), {
+        duration: Infinity,
+      });
+    });
   };
 
   const value: Web3ContextType = {
@@ -157,6 +243,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
     disconnectWallet,
     isCorrectNetwork,
     switchNetwork,
+    executeTransaction,
   };
 
   return <Web3Context.Provider value={value}>{children}</Web3Context.Provider>;

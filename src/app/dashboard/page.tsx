@@ -22,8 +22,8 @@ interface UserPosition {
 }
 
 export default function DashboardPage() {
-  const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork } = useWeb3();
-  const { showSuccess, showError, showConfirm } = useToast();
+  const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork, executeTransaction } = useWeb3();
+  const { showSuccess, showError } = useToast();
   const [loading, setLoading] = useState(false);
   const [userPositions, setUserPositions] = useState<UserPosition[]>([]);
   const [claimableWinnings, setClaimableWinnings] = useState<number[]>([]);
@@ -96,23 +96,27 @@ export default function DashboardPage() {
   const claimWinnings = async (marketId: number) => {
     if (!contract) return;
 
-    showConfirm(
-      'Are you sure you want to claim your winnings for this market?',
-      async () => {
-        try {
-          setLoading(true);
+    try {
+      setLoading(true);
+      
+      await executeTransaction(
+        async () => {
           const tx = await contract.claimWinning(marketId);
-          await tx.wait();
-          showSuccess('Winnings claimed successfully!');
-          loadUserPositions();
-        } catch (error: any) {
-          console.error('Error claiming winnings:', error);
-          showError(`Error claiming winnings: ${error.message || error}`);
-        } finally {
-          setLoading(false);
-        }
+          return await tx.wait();
+        },
+        'Are you sure you want to claim your winnings for this market?',
+        'Winnings claimed successfully!'
+      );
+      
+      loadUserPositions();
+    } catch (error: any) {
+      console.error('Error claiming winnings:', error);
+      if (error.message !== 'User cancelled') {
+        showError(`Error claiming winnings: ${error.message || error}`);
       }
-    );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const formatDate = (timestamp: number) => {
