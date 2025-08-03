@@ -63,7 +63,7 @@ export default function MarketPage() {
         resolved: result[11],
       }));
       
-      setMarkets(formattedMarkets);
+      setMarkets(formattedMarkets.reverse());
     } catch (error) {
       console.error('Error loading markets:', error);
     }

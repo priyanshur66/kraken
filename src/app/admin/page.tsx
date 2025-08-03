@@ -69,7 +69,7 @@ export default function AdminPage() {
         totalOptionDShares: ethers.formatEther(result[10]),
       }));
       
-      setMarkets(formattedMarkets);
+      setMarkets(formattedMarkets.reverse());
     } catch (error) {
       console.error('Error loading markets:', error);
     }

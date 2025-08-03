@@ -84,7 +84,7 @@ export default function DashboardPage() {
         }
       }
       
-      setUserPositions(userPositions);
+      setUserPositions(userPositions.reverse());
       setClaimableWinnings(claimable);
     } catch (error) {
       console.error('Error loading user positions:', error);
