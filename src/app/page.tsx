@@ -2,80 +2,91 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <div className="max-w-4xl mx-auto px-6 py-20">
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Purple gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+      
+      {/* Decorative gradient orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-20">
         <div className="text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            Kraken Prediction Markets
+          <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
+            Kraken Prediction{" "}
+            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+              Markets
+            </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
             Bet on future events with our decentralized prediction markets. 
             Trade your insights and earn rewards based on accurate predictions.
           </p>
           
-          <div className="flex gap-4 justify-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Link
               href="/market"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              className="bg-white text-black px-10 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
             >
               View Markets
             </Link>
             <Link
               href="/dashboard"
-              className="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="bg-transparent border-2 border-purple-400 text-purple-400 px-10 py-4 rounded-xl font-semibold hover:bg-purple-400 hover:text-black transition-all transform hover:scale-105"
             >
               Dashboard
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-blue-600 text-3xl mb-4">📊</div>
-              <h3 className="text-lg font-semibold mb-2">Trade Predictions</h3>
-              <p className="text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all transform hover:scale-105">
+              <div className="text-purple-400 text-4xl mb-6">📊</div>
+              <h3 className="text-xl font-semibold mb-4 text-white">Trade Predictions</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Buy shares in outcomes you believe will happen and earn rewards if you're right.
               </p>
             </div>
             
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-blue-600 text-3xl mb-4">🏆</div>
-              <h3 className="text-lg font-semibold mb-2">Win Rewards</h3>
-              <p className="text-gray-600">
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all transform hover:scale-105">
+              <div className="text-purple-400 text-4xl mb-6">🏆</div>
+              <h3 className="text-xl font-semibold mb-4 text-white">Win Rewards</h3>
+              <p className="text-gray-300 leading-relaxed">
                 Successful predictions are rewarded with USDC tokens from the market pool.
               </p>
             </div>
             
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <div className="text-blue-600 text-3xl mb-4">🔒</div>
-              <h3 className="text-lg font-semibold mb-2">Decentralized</h3>
-              <p className="text-gray-600">
+            <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all transform hover:scale-105">
+              <div className="text-purple-400 text-4xl mb-6">🔒</div>
+              <h3 className="text-xl font-semibold mb-4 text-white">Decentralized</h3>
+              <p className="text-gray-300 leading-relaxed">
                 All markets run on smart contracts ensuring transparency and fair resolution.
               </p>
             </div>
           </div>
 
-          <div className="mt-16 bg-blue-50 p-8 rounded-lg">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
-              <div>
-                <div className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mb-3">1</div>
-                <h4 className="font-semibold mb-2">Connect Wallet</h4>
-                <p className="text-sm text-gray-600">Connect your MetaMask wallet to the Etherlink Testnet</p>
+          <div className="mt-20 bg-white/5 backdrop-blur-md p-10 rounded-3xl border border-white/10">
+            <h2 className="text-3xl font-bold text-white mb-8 text-center">How It Works</h2>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+              <div className="group">
+                <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold mb-6 mx-auto text-lg group-hover:scale-110 transition-transform">1</div>
+                <h4 className="font-semibold mb-3 text-white text-lg">Connect Wallet</h4>
+                <p className="text-gray-300 leading-relaxed">Connect your MetaMask wallet to the Etherlink Testnet</p>
               </div>
-              <div>
-                <div className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mb-3">2</div>
-                <h4 className="font-semibold mb-2">Browse Markets</h4>
-                <p className="text-sm text-gray-600">Explore available prediction markets and their options</p>
+              <div className="group">
+                <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold mb-6 mx-auto text-lg group-hover:scale-110 transition-transform">2</div>
+                <h4 className="font-semibold mb-3 text-white text-lg">Browse Markets</h4>
+                <p className="text-gray-300 leading-relaxed">Explore available prediction markets and their options</p>
               </div>
-              <div>
-                <div className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mb-3">3</div>
-                <h4 className="font-semibold mb-2">Place Bets</h4>
-                <p className="text-sm text-gray-600">Use USDC to buy shares in outcomes you believe will happen</p>
+              <div className="group">
+                <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold mb-6 mx-auto text-lg group-hover:scale-110 transition-transform">3</div>
+                <h4 className="font-semibold mb-3 text-white text-lg">Place Bets</h4>
+                <p className="text-gray-300 leading-relaxed">Use USDC to buy shares in outcomes you believe will happen</p>
               </div>
-              <div>
-                <div className="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mb-3">4</div>
-                <h4 className="font-semibold mb-2">Claim Winnings</h4>
-                <p className="text-sm text-gray-600">If your prediction is correct, claim your rewards from the pool</p>
+              <div className="group">
+                <div className="bg-gradient-to-r from-purple-500 to-blue-500 text-white w-12 h-12 rounded-full flex items-center justify-center font-bold mb-6 mx-auto text-lg group-hover:scale-110 transition-transform">4</div>
+                <h4 className="font-semibold mb-3 text-white text-lg">Claim Winnings</h4>
+                <p className="text-gray-300 leading-relaxed">If your prediction is correct, claim your rewards from the pool</p>
               </div>
             </div>
           </div>

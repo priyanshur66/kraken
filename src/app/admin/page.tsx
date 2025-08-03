@@ -159,13 +159,18 @@ export default function AdminPage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-          <p className="mb-4">Please connect your wallet to access the admin panel.</p>
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Admin Dashboard</h1>
+          <p className="mb-6 text-gray-300">Please connect your wallet to access the admin panel.</p>
           <button
             onClick={connectWallet}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all font-medium"
           >
             Connect Wallet
           </button>
@@ -176,13 +181,18 @@ export default function AdminPage() {
 
   if (!isCorrectNetwork) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Wrong Network</h1>
-          <p className="mb-4">Please switch to the Etherlink Testnet to access the admin panel.</p>
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Wrong Network</h1>
+          <p className="mb-6 text-gray-300">Please switch to the Etherlink Testnet to access the admin panel.</p>
           <button
             onClick={switchNetwork}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-red-600 transition-all font-medium"
           >
             Switch Network
           </button>
@@ -192,19 +202,27 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-          <p className="text-gray-600">Connected: {account}</p>
+    <div className="min-h-screen bg-black relative overflow-hidden p-6">
+      {/* Purple gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+      
+      {/* Decorative gradient orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 mb-8">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Admin Dashboard</h1>
+          <p className="text-gray-300 font-mono">Connected: {account}</p>
         </div>
 
         {/* Create Market Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h2 className="text-2xl font-bold mb-4">Create New Market</h2>
-          <form onSubmit={handleCreateMarket} className="space-y-4">
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 mb-8">
+          <h2 className="text-3xl font-bold mb-6 text-white">Create New Market</h2>
+          <form onSubmit={handleCreateMarket} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Question
               </label>
               <input

@@ -245,13 +245,18 @@ export default function MarketPage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Prediction Markets</h1>
-          <p className="mb-4">Please connect your wallet to view and participate in markets.</p>
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Prediction Markets</h1>
+          <p className="mb-6 text-gray-300">Please connect your wallet to view and participate in markets.</p>
           <button
             onClick={connectWallet}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all font-medium"
           >
             Connect Wallet
           </button>
@@ -262,13 +267,18 @@ export default function MarketPage() {
 
   if (!isCorrectNetwork) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Wrong Network</h1>
-          <p className="mb-4">Please switch to the Etherlink Testnet to access the markets.</p>
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Wrong Network</h1>
+          <p className="mb-6 text-gray-300">Please switch to the Etherlink Testnet to access the markets.</p>
           <button
             onClick={switchNetwork}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-red-600 transition-all font-medium"
           >
             Switch Network
           </button>
@@ -278,21 +288,29 @@ export default function MarketPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-black relative overflow-hidden p-6">
+      {/* Purple gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+      
+      {/* Decorative gradient orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h1 className="text-3xl font-bold mb-2">Prediction Markets</h1>
-          <div className="flex justify-between items-center">
-            <p className="text-gray-600">Connected: {account}</p>
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 mb-8">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Prediction Markets</h1>
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+            <p className="text-gray-300 font-mono">Connected: {account}</p>
             <div className="text-right">
-              <p className="text-sm text-gray-500">USDC Balance: {parseFloat(usdcBalance).toFixed(2)} USDC</p>
-              <p className="text-sm text-gray-500">Allowance: {parseFloat(allowance).toFixed(2)} USDC</p>
-              <div className="mt-2 flex gap-2 justify-end">
+              <p className="text-sm text-gray-300">USDC Balance: {parseFloat(usdcBalance).toFixed(2)} USDC</p>
+              <p className="text-sm text-gray-300">Allowance: {parseFloat(allowance).toFixed(2)} USDC</p>
+              <div className="mt-3 flex gap-3 justify-end">
                 <button
                   onClick={mintUsdc}
                   disabled={loading}
-                  className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 disabled:opacity-50"
+                  className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-4 py-2 rounded-lg text-sm hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 transition-all font-medium"
                 >
                   {loading ? 'Minting...' : 'Mint USDC'}
                 </button>
@@ -300,7 +318,7 @@ export default function MarketPage() {
                   <button
                     onClick={approveUsdc}
                     disabled={loading}
-                    className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 disabled:opacity-50"
+                    className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-lg text-sm hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 transition-all font-medium"
                   >
                     {loading ? 'Approving...' : 'Approve USDC'}
                   </button>
@@ -311,33 +329,33 @@ export default function MarketPage() {
         </div>
 
         {/* Markets Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {markets.length === 0 ? (
-            <div className="col-span-full bg-white p-8 rounded-lg shadow-md text-center">
-              <p className="text-gray-500">No markets available yet.</p>
+            <div className="col-span-full bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 text-center">
+              <p className="text-gray-300 text-lg">No markets available yet.</p>
             </div>
           ) : (
             markets.map((market) => (
-              <div key={market.id} className="bg-white p-6 rounded-lg shadow-md">
-                <div className="mb-4">
-                  <h3 className="text-lg font-semibold mb-2">{market.question}</h3>
-                  <div className="flex items-center justify-between text-sm text-gray-500 mb-2">
+              <div key={market.id} className="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 hover:bg-white/20 transition-all">
+                <div className="mb-6">
+                  <h3 className="text-xl font-semibold mb-3 text-white">{market.question}</h3>
+                  <div className="flex items-center justify-between text-sm text-gray-300 mb-3">
                     <span>Market ID: {market.id}</span>
                     <span>Ends: {formatDate(market.endTime)}</span>
                   </div>
                   
                   {/* Status Badge */}
-                  <div className="mb-3">
+                  <div className="mb-4">
                     {market.resolved ? (
-                      <span className="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
+                      <span className="inline-block bg-gray-500/50 text-gray-200 px-3 py-1 rounded-lg text-sm">
                         Resolved
                       </span>
                     ) : isMarketExpired(market.endTime) ? (
-                      <span className="inline-block bg-red-100 text-red-800 px-2 py-1 rounded text-sm">
+                      <span className="inline-block bg-red-500/50 text-red-200 px-3 py-1 rounded-lg text-sm">
                         Expired
                       </span>
                     ) : (
-                      <span className="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
+                      <span className="inline-block bg-green-500/50 text-green-200 px-3 py-1 rounded-lg text-sm">
                         Active
                       </span>
                     )}
@@ -345,21 +363,21 @@ export default function MarketPage() {
                 </div>
 
                 {/* Options */}
-                <div className="space-y-2 mb-4">
-                  <div className="text-sm font-medium text-gray-700">Options:</div>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div className="p-2 bg-gray-50 rounded">A: {market.optionA}</div>
-                    <div className="p-2 bg-gray-50 rounded">B: {market.optionB}</div>
-                    <div className="p-2 bg-gray-50 rounded">C: {market.optionC}</div>
-                    <div className="p-2 bg-gray-50 rounded">D: {market.optionD}</div>
+                <div className="space-y-3 mb-6">
+                  <div className="text-sm font-medium text-gray-300">Options:</div>
+                  <div className="grid grid-cols-2 gap-3 text-sm">
+                    <div className="p-3 bg-white/10 rounded-lg text-gray-300">A: {market.optionA}</div>
+                    <div className="p-3 bg-white/10 rounded-lg text-gray-300">B: {market.optionB}</div>
+                    <div className="p-3 bg-white/10 rounded-lg text-gray-300">C: {market.optionC}</div>
+                    <div className="p-3 bg-white/10 rounded-lg text-gray-300">D: {market.optionD}</div>
                   </div>
                 </div>
 
                 {/* Betting Interface */}
                 {isMarketActive(market) && (
-                  <div className="border-t pt-4">
-                    <div className="mb-3">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <div className="border-t border-white/20 pt-6">
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-300 mb-2">
                         Select Option to Bet On:
                       </label>
                       <select
@@ -368,19 +386,19 @@ export default function MarketPage() {
                           setSelectedMarket(market.id);
                           setSelectedOption(e.target.value);
                         }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-md"
                       >
-                        <option value="">Choose an option...</option>
-                        <option value="A">A: {market.optionA}</option>
-                        <option value="B">B: {market.optionB}</option>
-                        <option value="C">C: {market.optionC}</option>
-                        <option value="D">D: {market.optionD}</option>
+                        <option value="" className="bg-gray-800">Choose an option...</option>
+                        <option value="A" className="bg-gray-800">A: {market.optionA}</option>
+                        <option value="B" className="bg-gray-800">B: {market.optionB}</option>
+                        <option value="C" className="bg-gray-800">C: {market.optionC}</option>
+                        <option value="D" className="bg-gray-800">D: {market.optionD}</option>
                       </select>
                     </div>
 
                     {selectedMarket === market.id && selectedOption && (
-                      <div className="mb-3">
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-300 mb-2">
                           Bet Amount (USDC):
                         </label>
                         <input
@@ -389,7 +407,7 @@ export default function MarketPage() {
                           min="0"
                           value={betAmount}
                           onChange={(e) => setBetAmount(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-400 backdrop-blur-md placeholder-gray-400"
                           placeholder="Enter amount in USDC"
                         />
                       </div>
@@ -399,14 +417,14 @@ export default function MarketPage() {
                       <button
                         onClick={placeBet}
                         disabled={loading || parseFloat(allowance) < parseFloat(betAmount)}
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-6 rounded-lg hover:from-purple-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
                       >
                         {loading ? 'Placing Bet...' : `Place Bet: ${betAmount} USDC on Option ${selectedOption}`}
                       </button>
                     )}
 
                     {parseFloat(allowance) < parseFloat(betAmount || '0') && betAmount && (
-                      <p className="text-sm text-red-500 mt-2">
+                      <p className="text-sm text-red-400 mt-3">
                         Insufficient allowance. Please approve USDC first.
                       </p>
                     )}
@@ -414,8 +432,8 @@ export default function MarketPage() {
                 )}
 
                 {!isMarketActive(market) && (
-                  <div className="border-t pt-4">
-                    <p className="text-sm text-gray-500 text-center">
+                  <div className="border-t border-white/20 pt-6">
+                    <p className="text-sm text-gray-400 text-center">
                       {market.resolved ? 'This market has been resolved.' : 'This market has expired.'}
                     </p>
                   </div>

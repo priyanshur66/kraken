@@ -146,13 +146,18 @@ export default function DashboardPage() {
 
   if (!isConnected) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-          <p className="mb-4">Please connect your wallet to view your positions.</p>
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Dashboard</h1>
+          <p className="mb-6 text-gray-300">Please connect your wallet to view your positions.</p>
           <button
             onClick={connectWallet}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all font-medium"
           >
             Connect Wallet
           </button>
@@ -163,13 +168,18 @@ export default function DashboardPage() {
 
   if (!isCorrectNetwork) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h1 className="text-2xl font-bold mb-4">Wrong Network</h1>
-          <p className="mb-4">Please switch to the Etherlink Testnet to view your dashboard.</p>
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Wrong Network</h1>
+          <p className="mb-6 text-gray-300">Please switch to the Etherlink Testnet to view your dashboard.</p>
           <button
             onClick={switchNetwork}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-lg hover:from-orange-600 hover:to-red-600 transition-all font-medium"
           >
             Switch Network
           </button>
@@ -179,33 +189,41 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-black relative overflow-hidden p-6">
+      {/* Purple gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+      
+      {/* Decorative gradient orbs */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 max-w-6xl mx-auto">
         {/* Header */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-6">
-          <h1 className="text-3xl font-bold mb-2">Your Dashboard</h1>
-          <p className="text-gray-600">Connected: {account}</p>
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20 mb-8">
+          <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">Your Dashboard</h1>
+          <p className="text-gray-300 font-mono">Connected: {account}</p>
         </div>
 
         {/* Claimable Winnings */}
         {claimableWinnings.length > 0 && (
-          <div className="bg-green-50 border border-green-200 p-6 rounded-lg shadow-md mb-6">
-            <h2 className="text-xl font-bold text-green-800 mb-4">🎉 Claimable Winnings</h2>
-            <div className="space-y-3">
+          <div className="bg-green-500/20 border border-green-400/30 p-8 rounded-2xl backdrop-blur-md mb-8">
+            <h2 className="text-2xl font-bold text-green-300 mb-6">🎉 Claimable Winnings</h2>
+            <div className="space-y-4">
               {claimableWinnings.map((marketId) => {
                 const position = userPositions.find(p => p.marketId === marketId);
                 return position ? (
-                  <div key={marketId} className="flex justify-between items-center bg-white p-4 rounded">
+                  <div key={marketId} className="flex justify-between items-center bg-white/10 backdrop-blur-md p-6 rounded-xl border border-white/20">
                     <div>
-                      <p className="font-medium">{position.question}</p>
-                      <p className="text-sm text-gray-600">
+                      <p className="font-medium text-white">{position.question}</p>
+                      <p className="text-sm text-green-300">
                         Winning shares: {getUserWinningShares(position)} USDC
                       </p>
                     </div>
                     <button
                       onClick={() => claimWinnings(marketId)}
                       disabled={loading}
-                      className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+                      className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-3 rounded-lg hover:from-green-600 hover:to-emerald-600 disabled:opacity-50 transition-all font-medium"
                     >
                       {loading ? 'Claiming...' : 'Claim'}
                     </button>
@@ -217,90 +235,90 @@ export default function DashboardPage() {
         )}
 
         {/* User Positions */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">Your Positions</h2>
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h2 className="text-3xl font-bold mb-6 text-white">Your Positions</h2>
           {loading ? (
             <div className="text-center py-8">
-              <p>Loading your positions...</p>
+              <p className="text-gray-300">Loading your positions...</p>
             </div>
           ) : userPositions.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-500 mb-4">You don't have any positions yet.</p>
+              <p className="text-gray-300 mb-6">You don't have any positions yet.</p>
               <a
                 href="/market"
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-6 py-3 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all font-medium"
               >
                 Explore Markets
               </a>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-8">
               {userPositions.map((position) => (
-                <div key={position.marketId} className="border border-gray-200 rounded-lg p-6">
-                  <div className="flex justify-between items-start mb-4">
+                <div key={position.marketId} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
+                  <div className="flex flex-col lg:flex-row justify-between items-start mb-6">
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">{position.question}</h3>
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
+                      <h3 className="text-xl font-semibold mb-3 text-white">{position.question}</h3>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
                         <span>Market ID: {position.marketId}</span>
                         <span>End Time: {formatDate(position.endTime)}</span>
                         {position.resolved && (
-                          <span className="text-green-600 font-medium">
+                          <span className="text-green-300 font-medium">
                             Resolved: {getOutcomeText(position.outcome)}
                           </span>
                         )}
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="mt-4 lg:mt-0">
                       {position.resolved ? (
-                        <span className="inline-block bg-gray-100 text-gray-800 px-2 py-1 rounded text-sm">
+                        <span className="inline-block bg-gray-500/50 text-gray-200 px-3 py-1 rounded-lg text-sm">
                           Resolved
                         </span>
                       ) : Date.now() / 1000 > position.endTime ? (
-                        <span className="inline-block bg-red-100 text-red-800 px-2 py-1 rounded text-sm">
+                        <span className="inline-block bg-red-500/50 text-red-200 px-3 py-1 rounded-lg text-sm">
                           Expired
                         </span>
                       ) : (
-                        <span className="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
+                        <span className="inline-block bg-green-500/50 text-green-200 px-3 py-1 rounded-lg text-sm">
                           Active
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-gray-50 p-3 rounded">
-                      <div className="text-sm font-medium text-gray-700 mb-1">Option A</div>
-                      <div className="text-sm text-gray-600 mb-2">{position.optionA}</div>
-                      <div className="text-sm font-semibold">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="bg-white/10 p-4 rounded-xl">
+                      <div className="text-sm font-medium text-gray-300 mb-2">Option A</div>
+                      <div className="text-sm text-gray-400 mb-3">{position.optionA}</div>
+                      <div className="text-sm font-semibold text-white">
                         {parseFloat(position.userOptionAShares).toFixed(6)} USDC
                       </div>
                     </div>
-                    <div className="bg-gray-50 p-3 rounded">
-                      <div className="text-sm font-medium text-gray-700 mb-1">Option B</div>
-                      <div className="text-sm text-gray-600 mb-2">{position.optionB}</div>
-                      <div className="text-sm font-semibold">
+                    <div className="bg-white/10 p-4 rounded-xl">
+                      <div className="text-sm font-medium text-gray-300 mb-2">Option B</div>
+                      <div className="text-sm text-gray-400 mb-3">{position.optionB}</div>
+                      <div className="text-sm font-semibold text-white">
                         {parseFloat(position.userOptionBShares).toFixed(6)} USDC
                       </div>
                     </div>
-                    <div className="bg-gray-50 p-3 rounded">
-                      <div className="text-sm font-medium text-gray-700 mb-1">Option C</div>
-                      <div className="text-sm text-gray-600 mb-2">{position.optionC}</div>
-                      <div className="text-sm font-semibold">
+                    <div className="bg-white/10 p-4 rounded-xl">
+                      <div className="text-sm font-medium text-gray-300 mb-2">Option C</div>
+                      <div className="text-sm text-gray-400 mb-3">{position.optionC}</div>
+                      <div className="text-sm font-semibold text-white">
                         {parseFloat(position.userOptionCShares).toFixed(6)} USDC
                       </div>
                     </div>
-                    <div className="bg-gray-50 p-3 rounded">
-                      <div className="text-sm font-medium text-gray-700 mb-1">Option D</div>
-                      <div className="text-sm text-gray-600 mb-2">{position.optionD}</div>
-                      <div className="text-sm font-semibold">
+                    <div className="bg-white/10 p-4 rounded-xl">
+                      <div className="text-sm font-medium text-gray-300 mb-2">Option D</div>
+                      <div className="text-sm text-gray-400 mb-3">{position.optionD}</div>
+                      <div className="text-sm font-semibold text-white">
                         {parseFloat(position.userOptionDShares).toFixed(6)} USDC
                       </div>
                     </div>
                   </div>
 
                   {position.resolved && (
-                    <div className="mt-4 p-3 bg-blue-50 rounded">
-                      <p className="text-sm text-blue-800">
+                    <div className="mt-6 p-4 bg-blue-500/20 rounded-xl border border-blue-400/30">
+                      <p className="text-sm text-blue-200">
                         <strong>Result:</strong> {getOutcomeText(position.outcome)} won this market.
                         {getUserWinningShares(position) !== '0' ? 
                           ` You have ${parseFloat(getUserWinningShares(position)).toFixed(6)} USDC in winning shares.` :
