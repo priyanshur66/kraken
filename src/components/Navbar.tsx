@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useWeb3 } from '@/lib/Web3Context';
 
 export default function Navbar() {
-  const { account, isConnected, connectWallet, disconnectWallet } = useWeb3();
+  const { account, isConnected, connectWallet, disconnectWallet, isOwner } = useWeb3();
 
   return (
     <nav className="bg-black/90 backdrop-blur-md border-b border-white/10 relative z-50">
@@ -27,12 +27,14 @@ export default function Navbar() {
               >
                 Dashboard
               </Link>
-              <Link 
-                href="/admin" 
-                className="text-gray-300 hover:text-white transition-colors font-medium"
-              >
-                Admin
-              </Link>
+              {isOwner && (
+                <Link 
+                  href="/admin" 
+                  className="text-gray-300 hover:text-white transition-colors font-medium"
+                >
+                  Admin
+                </Link>
+              )}
             </div>
           </div>
           

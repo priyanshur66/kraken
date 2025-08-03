@@ -15,6 +15,8 @@ interface Web3ContextType {
   disconnectWallet: () => void;
   isCorrectNetwork: boolean;
   switchNetwork: () => Promise<void>;
+  isOwner: boolean;
+  checkOwnership: () => Promise<void>;
   executeTransaction: (
     transactionFn: () => Promise<any>,
     confirmationMessage: string,
@@ -43,10 +45,91 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
   const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [isCorrectNetwork, setIsCorrectNetwork] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     checkConnection();
-  }, []);
+    
+    // Listen for account changes
+    if (typeof window !== 'undefined' && window.ethereum) {
+      const handleAccountsChanged = async (accounts: string[]) => {
+        if (accounts.length === 0) {
+          // User disconnected wallet
+          disconnectWallet();
+          toast('Wallet disconnected', { icon: 'ℹ️' });
+        } else if (accounts[0] !== account) {
+          // Account changed - you can choose between refresh or graceful update
+          
+          // Option 1: Graceful update (recommended)
+          try {
+            if (window.ethereum) {
+              const web3Provider = new ethers.BrowserProvider(window.ethereum);
+              const signer = await web3Provider.getSigner();
+              const newAddress = await signer.getAddress();
+              
+              setAccount(newAddress);
+              setProvider(web3Provider);
+              setIsConnected(true);
+              
+              const contractInstance = new ethers.Contract(contractAddress, contractAbi, signer);
+              setContract(contractInstance);
+              
+              await checkNetwork(web3Provider);
+              toast.success(`Switched to account: ${newAddress.slice(0, 6)}...${newAddress.slice(-4)}`);
+            }
+          } catch (error) {
+            console.error('Error updating account:', error);
+            // Fallback to page refresh if graceful update fails
+            window.location.reload();
+          }
+          
+          // Option 2: Full page refresh (uncomment if you prefer this)
+          // window.location.reload();
+        }
+      };
+
+      const handleChainChanged = (chainId: string) => {
+        // Chain changed, refresh to update network state
+        toast('Network changed, refreshing page...', { icon: 'ℹ️' });
+        setTimeout(() => window.location.reload(), 1000);
+      };
+
+      // Add event listeners
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.on('chainChanged', handleChainChanged);
+
+      // Cleanup event listeners
+      return () => {
+        if (window.ethereum && window.ethereum.removeListener) {
+          window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+          window.ethereum.removeListener('chainChanged', handleChainChanged);
+        }
+      };
+    }
+  }, [account]);
+
+  useEffect(() => {
+    if (contract && account && isCorrectNetwork) {
+      checkOwnership();
+    } else {
+      setIsOwner(false);
+    }
+  }, [contract, account, isCorrectNetwork]);
+
+  const checkOwnership = async () => {
+    if (!contract || !account) {
+      setIsOwner(false);
+      return;
+    }
+
+    try {
+      const contractOwner = await contract.owner();
+      setIsOwner(contractOwner.toLowerCase() === account.toLowerCase());
+    } catch (error) {
+      console.error('Error checking ownership:', error);
+      setIsOwner(false);
+    }
+  };
 
   const checkConnection = async () => {
     if (typeof window !== 'undefined' && window.ethereum) {
@@ -114,6 +197,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
     setContract(null);
     setIsConnected(false);
     setIsCorrectNetwork(false);
+    setIsOwner(false);
   };
 
   const switchNetwork = async () => {
@@ -243,6 +327,8 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
     disconnectWallet,
     isCorrectNetwork,
     switchNetwork,
+    isOwner,
+    checkOwnership,
     executeTransaction,
   };
 

@@ -21,7 +21,7 @@ interface Market {
 }
 
 export default function AdminPage() {
-  const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork, executeTransaction } = useWeb3();
+  const { account, contract, isConnected, connectWallet, isCorrectNetwork, switchNetwork, executeTransaction, isOwner } = useWeb3();
   const { showSuccess, showError } = useToast();
   const [loading, setLoading] = useState(false);
   const [markets, setMarkets] = useState<Market[]>([]);
@@ -196,6 +196,23 @@ export default function AdminPage() {
           >
             Switch Network
           </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isOwner) {
+    return (
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/50 via-blue-900/50 to-purple-700/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
+        
+        <div className="relative z-10 bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h1 className="text-3xl font-bold mb-4 text-white">Access Denied</h1>
+          <p className="mb-6 text-gray-300">Only the contract owner can access the admin panel.</p>
+          <p className="text-sm text-gray-400">Your wallet: {account?.slice(0, 6)}...{account?.slice(-4)}</p>
         </div>
       </div>
     );
