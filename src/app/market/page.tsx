@@ -105,6 +105,41 @@ export default function MarketPage() {
     }
   };
 
+  const mintUsdc = async () => {
+    if (!provider) return;
+    
+    try {
+      setLoading(true);
+      
+      await executeTransaction(
+        async () => {
+          const usdcAbi = [
+            "function mint(uint256 amount) external"
+          ];
+          
+          const signer = await provider.getSigner();
+          const usdcContract = new ethers.Contract(usdcAddress, usdcAbi, signer);
+          
+          // Mint 1000 USDC (1000 * 10^6 because USDC has 6 decimals)
+          const mintAmount = ethers.parseUnits("1000", 6);
+          const tx = await usdcContract.mint(mintAmount);
+          return await tx.wait();
+        },
+        'This will mint 1,000 USDC to your wallet. Continue?',
+        'USDC minted successfully!'
+      );
+      
+      await loadUsdcBalance();
+    } catch (error: any) {
+      console.error('Error minting USDC:', error);
+      if (error.message !== 'User cancelled') {
+        showError(`Error minting USDC: ${error.message || error}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const approveUsdc = async () => {
     if (!provider || !contract) return;
     
@@ -253,15 +288,24 @@ export default function MarketPage() {
             <div className="text-right">
               <p className="text-sm text-gray-500">USDC Balance: {parseFloat(usdcBalance).toFixed(2)} USDC</p>
               <p className="text-sm text-gray-500">Allowance: {parseFloat(allowance).toFixed(2)} USDC</p>
-              {parseFloat(allowance) < 100 && (
+              <div className="mt-2 flex gap-2 justify-end">
                 <button
-                  onClick={approveUsdc}
+                  onClick={mintUsdc}
                   disabled={loading}
-                  className="mt-2 bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 disabled:opacity-50"
+                  className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 disabled:opacity-50"
                 >
-                  {loading ? 'Approving...' : 'Approve USDC'}
+                  {loading ? 'Minting...' : 'Mint USDC'}
                 </button>
-              )}
+                {parseFloat(allowance) < 100 && (
+                  <button
+                    onClick={approveUsdc}
+                    disabled={loading}
+                    className="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 disabled:opacity-50"
+                  >
+                    {loading ? 'Approving...' : 'Approve USDC'}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
