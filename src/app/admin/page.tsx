@@ -247,14 +247,14 @@ export default function AdminPage() {
                 required
                 value={createForm.question}
                 onChange={(e) => setCreateForm({ ...createForm, question: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Enter your prediction question"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Option A
                 </label>
                 <input
@@ -262,13 +262,13 @@ export default function AdminPage() {
                   required
                   value={createForm.optionA}
                   onChange={(e) => setCreateForm({ ...createForm, optionA: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="First option"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Option B
                 </label>
                 <input
@@ -276,13 +276,13 @@ export default function AdminPage() {
                   required
                   value={createForm.optionB}
                   onChange={(e) => setCreateForm({ ...createForm, optionB: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Second option"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Option C
                 </label>
                 <input
@@ -290,13 +290,13 @@ export default function AdminPage() {
                   required
                   value={createForm.optionC}
                   onChange={(e) => setCreateForm({ ...createForm, optionC: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Third option"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Option D
                 </label>
                 <input
@@ -304,14 +304,14 @@ export default function AdminPage() {
                   required
                   value={createForm.optionD}
                   onChange={(e) => setCreateForm({ ...createForm, optionD: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="Fourth option"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Duration (minutes)
               </label>
               <input
@@ -320,7 +320,7 @@ export default function AdminPage() {
                 min="1"
                 value={createForm.duration}
                 onChange={(e) => setCreateForm({ ...createForm, duration: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="How many minutes should this market run?"
               />
             </div>
@@ -328,7 +328,7 @@ export default function AdminPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 px-4 rounded-lg hover:from-purple-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium"
             >
               {loading ? 'Creating...' : 'Create Market'}
             </button>
@@ -336,67 +336,63 @@ export default function AdminPage() {
         </div>
 
         {/* Markets List Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">All Markets</h2>
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+          <h2 className="text-3xl font-bold mb-6 text-white">All Markets</h2>
           {markets.length === 0 ? (
-            <p className="text-gray-500">No markets created yet.</p>
+            <p className="text-gray-300">No markets created yet.</p>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-6">
               {markets.map((market) => (
-                <div key={market.id} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex justify-between items-start mb-3">
+                <div key={market.id} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6">
+                  <div className="flex justify-between items-start mb-4">
                     <div>
-                      <h3 className="text-lg font-semibold">{market.question}</h3>
-                      <p className="text-sm text-gray-500">Market ID: {market.id}</p>
+                      <h3 className="text-xl font-semibold text-white mb-2">{market.question}</h3>
+                      <p className="text-sm text-gray-400">Market ID: {market.id}</p>
                     </div>
                     <div className="flex items-center space-x-2">
                       {market.resolved ? (
-                        <span className="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">
+                        <span className="bg-green-500/20 text-green-300 px-3 py-1 rounded-full text-sm border border-green-500/30">
                           Resolved
                         </span>
                       ) : isMarketExpired(market.endTime) ? (
                         <button
                           onClick={() => handleResolveMarket(market.id)}
                           disabled={loading}
-                          className="bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600 disabled:opacity-50"
+                          className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg hover:from-orange-600 hover:to-red-600 disabled:opacity-50 transition-all font-medium"
                         >
                           Resolve Market
                         </button>
                       ) : (
-                        <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                        <span className="bg-blue-500/20 text-blue-300 px-3 py-1 rounded-full text-sm border border-blue-500/30">
                           Active
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
-                    <div className="bg-gray-50 p-2 rounded">
-                      <div className="text-xs text-gray-500">Option A</div>
-                      <div className="font-medium">{market.optionA}</div>
-                      <div className="text-xs text-blue-600">{market.totalOptionAShares} USDC</div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-gray-400 mb-1">Option A</div>
+                      <div className="font-medium text-white">{market.optionA}</div>
                     </div>
-                    <div className="bg-gray-50 p-2 rounded">
-                      <div className="text-xs text-gray-500">Option B</div>
-                      <div className="font-medium">{market.optionB}</div>
-                      <div className="text-xs text-blue-600">{market.totalOptionBShares} USDC</div>
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-gray-400 mb-1">Option B</div>
+                      <div className="font-medium text-white">{market.optionB}</div>
                     </div>
-                    <div className="bg-gray-50 p-2 rounded">
-                      <div className="text-xs text-gray-500">Option C</div>
-                      <div className="font-medium">{market.optionC}</div>
-                      <div className="text-xs text-blue-600">{market.totalOptionCShares} USDC</div>
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-gray-400 mb-1">Option C</div>
+                      <div className="font-medium text-white">{market.optionC}</div>
                     </div>
-                    <div className="bg-gray-50 p-2 rounded">
-                      <div className="text-xs text-gray-500">Option D</div>
-                      <div className="font-medium">{market.optionD}</div>
-                      <div className="text-xs text-blue-600">{market.totalOptionDShares} USDC</div>
+                    <div className="bg-white/5 p-3 rounded-lg border border-white/10">
+                      <div className="text-xs text-gray-400 mb-1">Option D</div>
+                      <div className="font-medium text-white">{market.optionD}</div>
                     </div>
                   </div>
 
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-gray-300">
                     <span className="mr-4">End Time: {formatDate(market.endTime)}</span>
                     {isMarketExpired(market.endTime) && !market.resolved && (
-                      <span className="text-orange-600 font-medium">⚠ Ready to resolve</span>
+                      <span className="text-orange-400 font-medium">⚠ Ready to resolve</span>
                     )}
                   </div>
                 </div>
