@@ -599,8 +599,8 @@ export const contractAbi = [
 		"type": "function"
 	}
 ]
-export const contractAddress = "0x8175EfCe93A2c3f627b03CF17c58756D9f789a42"; 
+export const contractAddress = "0xD348da1883f9674a39A04DDe776B1C5173bCB771"; 
 
-export const usdcAddress = "0x4C2AA252BEe766D3399850569713b55178934849"; // USDC
+export const usdcAddress = "0xf298Ec2ea2FA1F41E5Fb7b5aE805773A05D88507"; // sample USDC
 
 export const chainId = 128123; // Testnet
