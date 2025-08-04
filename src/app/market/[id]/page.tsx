@@ -6,6 +6,7 @@ import { useWeb3 } from '@/lib/Web3Context';
 import { useToast } from '@/lib/ToastContext';
 import { ethers } from 'ethers';
 import { usdcAddress } from '@/lib/constants';
+import Comments from '@/components/Comments';
 import Link from 'next/link';
 
 interface Market {
@@ -440,19 +441,10 @@ export default function MarketDetailPage() {
                     <span className="font-medium text-white">
                       {option.key}: {option.text}
                     </span>
-                    <span className="text-sm text-gray-300">
-                      {getOptionPercentage(option.shares)}%
-                    </span>
+                    
                   </div>
-                  <div className="w-full bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full"
-                      style={{ width: `${getOptionPercentage(option.shares)}%` }}
-                    ></div>
-                  </div>
-                  <div className="text-xs text-gray-400 mt-1">
-                    {parseFloat(option.shares).toFixed(2)} USDC
-                  </div>
+                  
+                  
                 </div>
               ))}
             </div>
@@ -574,6 +566,9 @@ export default function MarketDetailPage() {
             </div>
           </div>
         )}
+
+        {/* Comments Section */}
+        <Comments marketId={marketId} />
       </div>
     </div>
   );

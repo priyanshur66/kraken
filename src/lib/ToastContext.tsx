@@ -69,7 +69,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                 toast.dismiss(t.id);
                 onCancel && onCancel();
               }}
-              className="px-3 py-1 text-sm bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
+              className="px-3 py-1 text-sm bg-red-600 text-gray-800 rounded"
             >
               Cancel
             </button>
@@ -78,7 +78,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
                 toast.dismiss(t.id);
                 onConfirm();
               }}
-              className="px-3 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+              className="px-3 py-1 text-sm bg-blue-700 text-black rounded hover:bg-blue-600"
             >
               Confirm
             </button>
