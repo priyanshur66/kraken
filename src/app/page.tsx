@@ -132,11 +132,9 @@ export default function Home() {
                       <div className="relative z-10 text-center">
                         <h3 className="text-xl font-bold text-white mb-4">🎭 Strategic Mastery</h3>
                         <p className="text-white text-sm leading-relaxed mb-6">
-                          Unlike traditional markets that reward following the crowd, Kraken's Shadow rewards strategic thinking. Bet on underdogs, manipulate market sentiment, and use tactical depth to outsmart the masses in this thrilling game of wit and deception.
+                          Unlike traditional markets that reward following the crowd, Kraken rewards strategic thinking. Bet on underdogs, manipulate market sentiment, and use tactical depth to outsmart the masses in this thrilling game of wit and deception.
                         </p>
-                        <div className="bg-white/20 rounded-full px-3 py-1 text-xs text-white font-semibold inline-block">
-                          LEGENDARY
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -153,7 +151,7 @@ export default function Home() {
                       <div className="relative z-10 text-center">
                         <div className="text-6xl mb-4">⚡</div>
                         <h3 className="text-xl font-bold text-white mb-2">Instant Resolution</h3>
-                        <p className="text-indigo-200 text-sm">In the Abyss</p>
+                        
                       </div>
                     </div>
                   </div>
@@ -166,9 +164,7 @@ export default function Home() {
                         <p className="text-white text-sm leading-relaxed mb-6">
                           No external oracles or delayed settlements. Markets resolve instantly based on which option has the fewest shares when the timer ends. This trustless, on-chain mechanism ensures fair, fast, and tamper-proof outcomes every time.
                         </p>
-                        <div className="bg-white/20 rounded-full px-3 py-1 text-xs text-white font-semibold inline-block">
-                          EPIC
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -185,7 +181,7 @@ export default function Home() {
                       <div className="relative z-10 text-center">
                         <div className="text-6xl mb-4">💰</div>
                         <h3 className="text-xl font-bold text-white mb-2">Massive Payouts</h3>
-                        <p className="text-blue-200 text-sm">For Bold Underdogs</p>
+                        <p className="text-blue-200 text-sm">For Strategic Thinkers</p>
                       </div>
                     </div>
                   </div>
@@ -196,7 +192,7 @@ export default function Home() {
                       <div className="relative z-10 text-center">
                         <h3 className="text-xl font-bold text-white mb-4">💰 Massive Payouts</h3>
                         <p className="text-white text-sm leading-relaxed mb-6">
-                          When the underdog wins, winners take massive slices of the entire pool. Expect 2x-10x returns or more when the kraken emerges from the depths. Unlike traditional markets where favorites dilute rewards, here the bold are richly rewarded.
+                          When the underdog wins, winners take massive slices of the entire pool. Expect 2x-10x returns or more. Unlike traditional markets where favorites dilute rewards, here the bold are richly rewarded.
                         </p>
                         <div className="bg-white/20 rounded-full px-3 py-1 text-xs text-white font-semibold inline-block">
                           RARE
@@ -230,9 +226,7 @@ export default function Home() {
                         <p className="text-white text-sm leading-relaxed mb-6">
                           No expert knowledge required. Simple connect-and-play mechanics make this perfect for newcomers to prediction markets. Short cycles, clear rules, and fun themes create an engaging experience without regulatory complexity.
                         </p>
-                        <div className="bg-white/20 rounded-full px-3 py-1 text-xs text-white font-semibold inline-block">
-                          COMMON
-                        </div>
+                        
                       </div>
                     </div>
                   </div>

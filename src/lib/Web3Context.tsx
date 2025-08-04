@@ -260,7 +260,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
           <span>{confirmationMessage}</span>
           <div className="flex space-x-2">
             <button
-              className="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600"
+              className="bg-blue-500 text-teal px-3 py-1 rounded text-sm hover:bg-blue-600"
               onClick={async () => {
                 toast.dismiss(t.id);
                 let lastError;
@@ -302,7 +302,7 @@ export const Web3Provider: React.FC<Web3ProviderProps> = ({ children }) => {
               Confirm
             </button>
             <button
-              className="bg-gray-500 text-white px-3 py-1 rounded text-sm hover:bg-gray-600"
+              className="bg-gray-500 text-red px-3 py-1 rounded text-sm hover:bg-gray-600"
               onClick={() => {
                 toast.dismiss(t.id);
                 reject(new Error('User cancelled'));
